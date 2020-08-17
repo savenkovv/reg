@@ -15,10 +15,7 @@ if (!empty($task)) {
   redirect_to('page_register.php');
   exit;
 }
-$password = $_POST['password'];
-$sql = "INSERT INTO reg (email, password) VALUES (:email, :password)";
-$statement = $pdo->prepare($sql);
-$statement->execute(['email' => $email, 'password' => $password]);
+add_user($email, $password);
 $message = "Запись добавлена";
 $_SESSION['success'] = $message;  
 redirect_to('page_login.php');
