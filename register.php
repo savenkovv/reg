@@ -3,21 +3,16 @@ session_start();
 require "functions.php";
 
 $email = $_POST['email'];
-$pdo = new PDO("mysql:host=localhost;dbname=marlin", "admin","");
-$sql = "SELECT * FROM reg WHERE email=:email";
-$statement = $pdo->prepare($sql);
-$statement->execute(['email' => $email]);
-$task = $statement->fetch(PDO::FETCH_ASSOC);
+$password = $_POST["password"];
+$user = get_user_by_email($email);
 
-if (!empty($task)) {
-  $message = "Этот эл. адрес уже занят другим пользователем.";
-  $_SESSION['danger'] = $message;  
+if (!empty($user)) {
+  set_flash_message("danger", "Этот эл. адрес уже занят другим пользователем.");
   redirect_to('page_register.php');
   exit;
 }
 add_user($email, $password);
-$message = "Запись добавлена";
-$_SESSION['success'] = $message;  
+set_flash_message("success", "Войдите со своим email и паролем");
 redirect_to('page_login.php');
 
 
